@@ -49,6 +49,7 @@ training_args = TrainingArguments(
     logging_steps=1,
     log_level="info",
     report_to="none",
+    disable_tqdm=True,
     neftune_noise_alpha=5.0,
 )
 
@@ -57,10 +58,7 @@ trainer = Trainer(
     args=training_args,
     data_collator=data_collator,
     train_dataset=train_dataset,
-    callbacks=[
-        transformers.PrinterCallback(),
-        transformers.ProgressCallback(),
-    ],
+    callbacks=[],
 )
 
 trainer.train()
