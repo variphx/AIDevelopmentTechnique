@@ -7,7 +7,6 @@ from transformers import TrainingArguments, Trainer
 from peft import LoraConfig, get_peft_model
 
 import argparse
-import pathlib
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--data-dir", type=str)
@@ -19,7 +18,7 @@ base_model = AutoModelForMaskedLM.from_pretrained(argv.base_model)
 tokenizer = AutoTokenizer.from_pretrained(argv.base_model)
 
 train_dataset = RawTrafficRulesDataset(
-    pathlib.Path(argv.data_dir),
+    "data/Main-QCVN 41_2019-BGTVT.txt",
     chunk_size=200,
     tokenizer=tokenizer,
 )
