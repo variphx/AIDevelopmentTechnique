@@ -42,12 +42,15 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     per_device_train_batch_size=8,
     num_train_epochs=argv.epochs,
-    learning_rate=1e-4,
+    learning_rate=5e-5,
     lr_scheduler_type=transformers.SchedulerType.COSINE,
-    save_strategy="epochs",
+    save_strategy="epoch",
+    logging_strategy="steps",
     logging_steps=1,
-    save_steps=0.1,
+    log_level="info",
+    save_strategy="epoch",
     report_to="none",
+    neftune_noise_alpha=5.0,
 )
 
 trainer = Trainer(
