@@ -49,7 +49,6 @@ training_args = TrainingArguments(
     logging_steps=1,
     log_level="info",
     report_to="none",
-    disable_tqdm=True,
     neftune_noise_alpha=5.0,
 )
 
