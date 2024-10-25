@@ -40,16 +40,16 @@ model = get_peft_model(base_model, lora_config)
 training_args = TrainingArguments(
     output_dir=argv.output_dir,
     overwrite_output_dir=True,
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=64,
     num_train_epochs=argv.epochs,
-    learning_rate=5e-5,
+    learning_rate=1e-5,
     lr_scheduler_type=transformers.SchedulerType.COSINE,
     save_strategy="epoch",
     logging_strategy="steps",
-    logging_steps=1,
-    log_level="info",
+    logging_steps=8,
+    log_level="debug",
     report_to="none",
-    neftune_noise_alpha=5.0,
+    neftune_noise_alpha=1.0,
 )
 
 trainer = Trainer(
