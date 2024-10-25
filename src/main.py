@@ -48,8 +48,8 @@ training_args = TrainingArguments(
     metric_for_best_model="loss",
     greater_is_better=False,
     load_best_model_at_end=True,
-    eval_strategy="step",
-    save_strategy="step",
+    eval_strategy="steps",
+    save_strategy="steps",
     report_to="none",
 )
 
