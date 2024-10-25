@@ -50,6 +50,7 @@ training_args = TrainingArguments(
     load_best_model_at_end=True,
     eval_strategy="steps",
     save_strategy="steps",
+    save_steps=0.1,
     report_to="none",
 )
 
