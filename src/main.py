@@ -48,7 +48,6 @@ training_args = TrainingArguments(
     logging_strategy="steps",
     logging_steps=1,
     log_level="info",
-    save_strategy="epoch",
     report_to="none",
     neftune_noise_alpha=5.0,
 )
