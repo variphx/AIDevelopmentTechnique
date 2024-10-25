@@ -48,6 +48,7 @@ training_args = TrainingArguments(
     logging_steps=0.1,
     metric_for_best_model="loss",
     greater_is_better=False,
+    load_best_model_at_end=True,
     report_to="none",
 )
 
