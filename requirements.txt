@@ -1,0 +1,8 @@
+numpy
+transformers
+datasets
+torch
+torchvision
+transformers
+peft
+bitsandbytes

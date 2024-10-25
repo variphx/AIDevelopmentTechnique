@@ -1,0 +1,61 @@
+from schema.dataset import RawTrafficRulesDataset
+from torch.optim import AdamW
+from torch.optim.lr_scheduler import CosineAnnealingLR
+from transformers import DataCollatorForLanguageModeling
+from transformers import AutoModelForMaskedLM, AutoTokenizer
+from transformers import TrainingArguments, Trainer
+from peft import LoraConfig, get_peft_model
+
+import argparse
+import pathlib
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument("--data-dir", type=str)
+argparser.add_argument("--base-model", type=str)
+argparser.add_argument("--output-dir", type=str)
+argv = argparser.parse_args()
+
+base_model = AutoModelForMaskedLM.from_pretrained(argv.base_model)
+tokenizer = AutoTokenizer.from_pretrained(argv.base_model)
+
+train_dataset = RawTrafficRulesDataset(
+    pathlib.Path(argv.data_dir),
+    chunk_size=200,
+    tokenizer=tokenizer,
+)
+data_collator = DataCollatorForLanguageModeling(
+    tokenizer=tokenizer, mlm=True, mlm_probability=0.15, return_tensors="pt"
+)
+
+lora_config = LoraConfig(
+    init_lora_weights="olora",
+    task_type="MASKED_LM",
+    target_modules=[
+        "query",
+        "value",
+    ],
+)
+
+model = get_peft_model(base_model, lora_config)
+optimizer = AdamW(model.parameters(), lr=5e-5)
+lr_scheduler = CosineAnnealingLR(optimizer=optimizer, T_max=3)
+
+training_args = TrainingArguments(
+    output_dir=argv.output_dir,
+    overwrite_output_dir=True,
+    do_train=True,
+    per_device_train_batch_size=128,
+    num_train_epochs=3,
+    torch_empty_cache_steps=True,
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    data_collator=data_collator,
+    train_dataset=train_dataset,
+    optimizers=(optimizer, lr_scheduler),
+)
+
+trainer.train()
+trainer.save_model(argv.output_dir)
