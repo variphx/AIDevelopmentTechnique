@@ -46,6 +46,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=128,
     num_train_epochs=3,
     torch_empty_cache_steps=True,
+    report_to="none",
 )
 
 trainer = Trainer(
