@@ -44,13 +44,9 @@ training_args = TrainingArguments(
     per_device_train_batch_size=8,
     num_train_epochs=30,
     lr_scheduler_type=transformers.SchedulerType.COSINE,
-    eval_strategy="steps",
     save_strategy="steps",
     logging_steps=0.1,
     save_steps=0.1,
-    metric_for_best_model="loss",
-    greater_is_better=False,
-    load_best_model_at_end=True,
     report_to="none",
 )
 
@@ -59,10 +55,8 @@ trainer = Trainer(
     args=training_args,
     data_collator=data_collator,
     train_dataset=train_dataset,
-    eval_dataset=train_dataset,
     callbacks=[
         transformers.PrinterCallback(),
-        transformers.EarlyStoppingCallback(early_stopping_threshold=1e-4),
     ],
 )
 
